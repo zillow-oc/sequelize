@@ -40,7 +40,7 @@ describe(Helpers.getTestDialectTeaser("DAOFactory"), function() {
       var User = this.sequelize.define('SuperUser', {}, { freezeTableName: false })
       var factorySize = this.sequelize.daoFactoryManager.all.length
 
-      var User2 = this.sequelize.define('SuperUser', {}, { freezeTableName: false })   
+      var User2 = this.sequelize.define('SuperUser', {}, { freezeTableName: false })
       var factorySize2 = this.sequelize.daoFactoryManager.all.length
 
       expect(factorySize).toEqual(factorySize2)
@@ -495,8 +495,8 @@ describe(Helpers.getTestDialectTeaser("DAOFactory"), function() {
           this.sequelize.sync({ force: true }).complete(function() {
             this.Worker.create({ name: 'worker' }).success(function(worker) {
               this.Task.create({ title: 'homework' }).success(function(task) {
-                this.worker    = worker
-                this.task      = task
+                this.worker = worker
+                this.task   = task
 
                 callback()
               }.bind(this))
@@ -753,6 +753,45 @@ describe(Helpers.getTestDialectTeaser("DAOFactory"), function() {
             include: [ { model: this.Task, as: 'ToDos' } ]
           }).complete(function(err, worker) {
             expect(worker.toDos[0].title).toEqual('homework')
+            done()
+          }.bind(this))
+        })
+      })
+
+      describe('hasManyToMany', function() {
+        before(function(done) {
+          this.Worker.hasMany(this.Task, { as: 'ToDos' })
+          this.Task.hasMany(this.Worker)
+
+          this.init(function() {
+            this.worker.setToDos([ this.task ]).success(done)
+          }.bind(this))
+        })
+
+        it('returns the associated tasks via worker.tasks (1st direction)', function(done) {
+          this.Worker.find({
+            where:   { name: 'worker' },
+            include: [ { model: this.Task, as: 'ToDos'} ]
+          }).complete(function(err, worker) {
+            expect(err).toBeNull()
+            expect(worker).toBeDefined()
+            expect(worker.toDos).toBeDefined()
+            expect(worker.toDos[0].title).toEqual('homework')
+
+            done()
+          }.bind(this))
+        })
+
+        it('returns the associated tasks via worker.tasks (2nd direction)', function(done) {
+          this.Task.find({
+            where:   { title: 'homework' },
+            include: [ this.Worker ]
+          }).complete(function(err, task) {
+            expect(err).toBeNull()
+            expect(task).toBeDefined()
+            expect(task.workers).toBeDefined()
+            expect(task.workers[0].name).toEqual('worker')
+
             done()
           }.bind(this))
         })
