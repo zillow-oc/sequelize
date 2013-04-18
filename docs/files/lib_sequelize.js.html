@@ -90,15 +90,12 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var Utils             = require(&quot;.&#x2F;utils&quot;)
+var url               = require(&quot;url&quot;)
+  , Utils             = require(&quot;.&#x2F;utils&quot;)
   , DAOFactory        = require(&quot;.&#x2F;dao-factory&quot;)
   , DataTypes         = require(&#x27;.&#x2F;data-types&#x27;)
   , DAOFactoryManager = require(&quot;.&#x2F;dao-factory-manager&quot;)
   , QueryInterface    = require(&quot;.&#x2F;query-interface&quot;)
-
-if (typeof process != &#x27;undefined&#x27; &amp;&amp; parseFloat(process.version.replace(&#x27;v&#x27;, &#x27;&#x27;)) &lt; 0.6) {
-  console.log(&quot;DEPRECATION WARNING: Support for Node.JS &lt; v0.6 will be canceled in the next minor release.&quot;)
-}
 
 module.exports = (function() {
   &#x2F;**
@@ -139,6 +136,26 @@ module.exports = (function() {
     @constructor
   *&#x2F;
   var Sequelize = function(database, username, password, options) {
+    var urlParts
+    options = options || {}
+
+    if (arguments.length === 1) {
+      urlParts = url.parse(arguments[0])
+      database = urlParts.path.replace(&#x2F;^\&#x2F;&#x2F;,  &#x27;&#x27;)
+      dialect = urlParts.protocol
+      options.dialect = urlParts.protocol.replace(&#x2F;:$&#x2F;, &#x27;&#x27;)
+      options.host = urlParts.hostname
+
+      if (urlParts.port) {
+        options.port = urlParts.port
+      }
+
+      if (urlParts.auth) {
+        username = urlParts.auth.split(&#x27;:&#x27;)[0]
+        password = urlParts.auth.split(&#x27;:&#x27;)[1]
+      }
+    }
+
     this.options = Utils._.extend({
       dialect: &#x27;mysql&#x27;,
       host: &#x27;localhost&#x27;,
@@ -236,6 +253,11 @@ module.exports = (function() {
       })
     }
     options.omitNull = globalOptions.omitNull
+
+    &#x2F;&#x2F; if you call &quot;define&quot; multiple times for the same daoName, do not clutter the factory
+    if(this.isDefined(daoName)) {
+        this.daoFactoryManager.removeDAO(this.daoFactoryManager.getDAO(daoName))
+    }
 
     var factory = new DAOFactory(daoName, attributes, options)
     this.daoFactoryManager.addDAO(factory.init(this.daoFactoryManager))

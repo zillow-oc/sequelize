@@ -57,7 +57,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "lib/sequelize.js",
-            "line": 12,
+            "line": 9,
             "description": "The entry point."
         }
     },
@@ -86,7 +86,7 @@
             "extension_for": [],
             "module": "Sequelize",
             "file": "lib/sequelize.js",
-            "line": 12,
+            "line": 9,
             "description": "Main class of the project.",
             "params": [
                 {
@@ -311,13 +311,13 @@
         },
         {
             "file": "lib/dialects/abstract/query.js",
-            "line": 350,
+            "line": 363,
             "description": "The function takes the result of the query execution and groups\nthe associated data by the callee.\n\nExample:\n  groupDataByCalleeFactory([\n    {\n      callee: { some: 'data', id: 1 },\n      association: { foo: 'bar', id: 1 }\n    }, {\n      callee: { some: 'data', id: 1 },\n      association: { foo: 'bar', id: 2 }\n    }, {\n      callee: { some: 'data', id: 1 },\n      association: { foo: 'bar', id: 3 }\n    }\n  ])\n\nResult:\n  Something like this:\n\n  [\n    {\n      callee:  { some: 'data', id: 1 },\n      association: [\n        { foo: 'bar', id: 1 },\n        { foo: 'bar', id: 2 },\n        { foo: 'bar', id: 3 }\n      ]\n    }\n  ]",
             "class": "QueryInterface"
         },
         {
             "file": "lib/dialects/abstract/query.js",
-            "line": 410,
+            "line": 423,
             "description": "This function will prepare the result of select queries with joins.",
             "params": [
                 {
@@ -432,7 +432,7 @@
         },
         {
             "file": "lib/dao-factory.js",
-            "line": 178,
+            "line": 177,
             "description": "Search for an instance.",
             "params": [
                 {
@@ -454,13 +454,13 @@
         },
         {
             "file": "lib/sequelize.js",
-            "line": 93,
+            "line": 110,
             "description": "Reference to Utils",
             "class": "Sequelize"
         },
         {
             "file": "lib/sequelize.js",
-            "line": 102,
+            "line": 119,
             "description": "Returns an instance of QueryInterface.",
             "itemtype": "method",
             "name": "getQueryInterface",
@@ -472,7 +472,7 @@
         },
         {
             "file": "lib/sequelize.js",
-            "line": 113,
+            "line": 130,
             "description": "Returns an instance (singleton) of Migrator.",
             "itemtype": "method",
             "name": "getMigrator",
@@ -542,19 +542,19 @@
         },
         {
             "message": "Missing item type\nThe function takes the result of the query execution and groups\nthe associated data by the callee.\n\nExample:\n  groupDataByCalleeFactory([\n    {\n      callee: { some: 'data', id: 1 },\n      association: { foo: 'bar', id: 1 }\n    }, {\n      callee: { some: 'data', id: 1 },\n      association: { foo: 'bar', id: 2 }\n    }, {\n      callee: { some: 'data', id: 1 },\n      association: { foo: 'bar', id: 3 }\n    }\n  ])\n\nResult:\n  Something like this:\n\n  [\n    {\n      callee:  { some: 'data', id: 1 },\n      association: [\n        { foo: 'bar', id: 1 },\n        { foo: 'bar', id: 2 },\n        { foo: 'bar', id: 3 }\n      ]\n    }\n  ]",
-            "line": " lib/dialects/abstract/query.js:350"
+            "line": " lib/dialects/abstract/query.js:363"
         },
         {
             "message": "Missing item type\nThis function will prepare the result of select queries with joins.",
-            "line": " lib/dialects/abstract/query.js:410"
+            "line": " lib/dialects/abstract/query.js:423"
         },
         {
             "message": "Missing item type\nSearch for an instance.",
-            "line": " lib/dao-factory.js:178"
+            "line": " lib/dao-factory.js:177"
         },
         {
             "message": "Missing item type\nReference to Utils",
-            "line": " lib/sequelize.js:93"
+            "line": " lib/sequelize.js:110"
         }
     ]
 }

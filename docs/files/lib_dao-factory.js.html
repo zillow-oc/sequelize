@@ -112,6 +112,7 @@ module.exports = (function() {
     }, options || {})
 
     this.name = name
+
     if (!this.options.tableName) {
       this.tableName = this.options.freezeTableName ? name : Utils.pluralize(name)
     } else {
@@ -236,8 +237,6 @@ module.exports = (function() {
     var options = Utils._.clone(options)
 
     if (typeof options === &#x27;object&#x27;) {
-      hasJoin = true
-
       if (options.hasOwnProperty(&#x27;include&#x27;)) {
         hasJoin = true
 
