@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib&#x2F;dao-factory.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>lib/dao-factory.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+                <h1><img src="../assets/css/logo.png" title=""></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,15 +41,15 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/QueryInterface.html">QueryInterface</a></li>
+                <li><a href="../classes/QueryInterface.html">QueryInterface</a></li>
             
-                <li><a href="..&#x2F;classes/Sequelize.html">Sequelize</a></li>
+                <li><a href="../classes/Sequelize.html">Sequelize</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="..&#x2F;modules/Sequelize.html">Sequelize</a></li>
+                <li><a href="../modules/Sequelize.html">Sequelize</a></li>
             
             </ul>
         </div>
@@ -86,13 +86,13 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: lib&#x2F;dao-factory.js</h1>
+                        <h1 class="file-heading">File: lib/dao-factory.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var Utils     = require(&quot;.&#x2F;utils&quot;)
-  , DAO       = require(&quot;.&#x2F;dao&quot;)
-  , DataTypes = require(&quot;.&#x2F;data-types&quot;)
+var Utils     = require(&quot;./utils&quot;)
+  , DAO       = require(&quot;./dao&quot;)
+  , DataTypes = require(&quot;./data-types&quot;)
   , Util      = require(&#x27;util&#x27;)
 
 module.exports = (function() {
@@ -119,10 +119,10 @@ module.exports = (function() {
       this.tableName = this.options.tableName
     }
     this.rawAttributes = attributes
-    this.daoFactoryManager = null &#x2F;&#x2F; defined in init function
+    this.daoFactoryManager = null // defined in init function
     this.associations = {}
 
-    &#x2F;&#x2F; extract validation
+    // extract validation
     this.validate = this.options.validate || {}
   }
 
@@ -147,7 +147,7 @@ module.exports = (function() {
 
     this.primaryKeys = {};
     Utils._.each(this.attributes, function(dataTypeString, attributeName) {
-      &#x2F;&#x2F; If you don&#x27;t specify a valid data type lets help you debug it
+      // If you don&#x27;t specify a valid data type lets help you debug it
       if (dataTypeString === undefined) {
         throw new Error(&quot;Unrecognized data type for field &quot; + attributeName );
       }
@@ -164,7 +164,7 @@ module.exports = (function() {
     addOptionalClassMethods.call(this)
     findAutoIncrementField.call(this)
 
-    &#x2F;&#x2F; DAO prototype
+    // DAO prototype
     this.DAO = function() {
       DAO.apply(this, arguments);
     };
@@ -227,7 +227,7 @@ module.exports = (function() {
     return this.QueryInterface.dropTable(this.tableName)
   }
 
-  &#x2F;&#x2F; alias for findAll
+  // alias for findAll
   DAOFactory.prototype.all = function(options) {
     return this.findAll(options)
   }
@@ -245,7 +245,7 @@ module.exports = (function() {
         }.bind(this))
       }
 
-      &#x2F;&#x2F; whereCollection is used for non-primary key updates
+      // whereCollection is used for non-primary key updates
       this.options.whereCollection = options.where || null
     }
 
@@ -255,29 +255,29 @@ module.exports = (function() {
     })
   }
 
-  &#x2F;&#x2F;right now, the caller (has-many-double-linked) is in charge of the where clause
+  //right now, the caller (has-many-double-linked) is in charge of the where clause
   DAOFactory.prototype.findAllJoin = function(joinTableName, options) {
     var optcpy = Utils._.clone(options)
     optcpy.attributes = optcpy.attributes || [Utils.addTicks(this.tableName)+&quot;.*&quot;]
 
-    &#x2F;&#x2F; whereCollection is used for non-primary key updates
+    // whereCollection is used for non-primary key updates
     this.options.whereCollection = optcpy.where || null;
 
     return this.QueryInterface.select(this, [this.tableName, joinTableName], optcpy, { type: &#x27;SELECT&#x27; })
   }
 
- &#x2F;**
+ /**
   * Search for an instance.
   *
   * @param  {Object} options Options to describe the scope of the search.
   *   @param {Array} include A list of associations which shall get eagerly loaded. Supported is either { include: [ DaoFactory1, DaoFactory2, ...] } or { include: [ { daoFactory: DaoFactory1, as: &#x27;Alias&#x27; } ] }.
   * @return {Object}         A promise which fires &#x60;success&#x60;, &#x60;error&#x60;, &#x60;complete&#x60; and &#x60;sql&#x60;.
-  *&#x2F;
+  */
   DAOFactory.prototype.find = function(options) {
     var hasJoin = false
 
-    &#x2F;&#x2F; no options defined?
-    &#x2F;&#x2F; return an emitter which emits null
+    // no options defined?
+    // return an emitter which emits null
     if ([null, undefined].indexOf(options) !== -1) {
       return new Utils.CustomEventEmitter(function(emitter) {
         setTimeout(function() { emitter.emit(&#x27;success&#x27;, null) }, 10)
@@ -286,7 +286,7 @@ module.exports = (function() {
 
     var primaryKeys = this.primaryKeys
 
-    &#x2F;&#x2F; options is not a hash but an id
+    // options is not a hash but an id
     if (typeof options === &#x27;number&#x27;) {
       options = { where: options }
     } else if (Utils._.size(primaryKeys) &amp;&amp; Utils.argsArePrimaryKeys(arguments, primaryKeys)) {
@@ -319,7 +319,7 @@ module.exports = (function() {
         }.bind(this))
       }
 
-      &#x2F;&#x2F; whereCollection is used for non-primary key updates
+      // whereCollection is used for non-primary key updates
       this.options.whereCollection = options.where || null
     }
 
@@ -400,18 +400,18 @@ module.exports = (function() {
     }).run()
   }
 
-  &#x2F;&#x2F; private
+  // private
 
   var query = function() {
     var args      = Utils._.map(arguments, function(arg, _) { return arg })
       , sequelize = this.daoFactoryManager.sequelize
 
-    &#x2F;&#x2F; add this as the second argument
+    // add this as the second argument
     if (arguments.length === 1) {
       args.push(this)
     }
 
-    &#x2F;&#x2F; add {} as options
+    // add {} as options
     if (args.length === 2) {
       args.push({})
     }
@@ -481,7 +481,7 @@ module.exports = (function() {
         var usesAlias   = (include.as !== include.daoFactory.tableName)
           , association = (usesAlias ? this.getAssociationByAlias(include.as) : this.getAssociation(include.daoFactory))
 
-        &#x2F;&#x2F; check if the current daoFactory is actually associated with the passed daoFactory
+        // check if the current daoFactory is actually associated with the passed daoFactory
         if (!!association &amp;&amp; (!association.options.as || (association.options.as === include.as))) {
           include.association = association
 
@@ -505,7 +505,7 @@ module.exports = (function() {
     }
   }
 
-  Utils._.extend(DAOFactory.prototype, require(&quot;.&#x2F;associations&#x2F;mixin&quot;))
+  Utils._.extend(DAOFactory.prototype, require(&quot;./associations/mixin&quot;))
 
   return DAOFactory
 })()
@@ -519,13 +519,13 @@ module.exports = (function() {
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

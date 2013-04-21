@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>lib&#x2F;sequelize.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>lib/sequelize.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+                <h1><img src="../assets/css/logo.png" title=""></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,15 +41,15 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/QueryInterface.html">QueryInterface</a></li>
+                <li><a href="../classes/QueryInterface.html">QueryInterface</a></li>
             
-                <li><a href="..&#x2F;classes/Sequelize.html">Sequelize</a></li>
+                <li><a href="../classes/Sequelize.html">Sequelize</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="..&#x2F;modules/Sequelize.html">Sequelize</a></li>
+                <li><a href="../modules/Sequelize.html">Sequelize</a></li>
             
             </ul>
         </div>
@@ -86,19 +86,19 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: lib&#x2F;sequelize.js</h1>
+                        <h1 class="file-heading">File: lib/sequelize.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 var url               = require(&quot;url&quot;)
-  , Utils             = require(&quot;.&#x2F;utils&quot;)
-  , DAOFactory        = require(&quot;.&#x2F;dao-factory&quot;)
-  , DataTypes         = require(&#x27;.&#x2F;data-types&#x27;)
-  , DAOFactoryManager = require(&quot;.&#x2F;dao-factory-manager&quot;)
-  , QueryInterface    = require(&quot;.&#x2F;query-interface&quot;)
+  , Utils             = require(&quot;./utils&quot;)
+  , DAOFactory        = require(&quot;./dao-factory&quot;)
+  , DataTypes         = require(&#x27;./data-types&#x27;)
+  , DAOFactoryManager = require(&quot;./dao-factory-manager&quot;)
+  , QueryInterface    = require(&quot;./query-interface&quot;)
 
 module.exports = (function() {
-  &#x2F;**
+  /**
     Main class of the project.
 
     @param {String} database The name of the database.
@@ -120,30 +120,30 @@ module.exports = (function() {
       @param {Object} [options.pool={}] Something.
 
     @example
-        &#x2F;&#x2F; without password and options
+        // without password and options
         var sequelize = new Sequelize(&#x27;database&#x27;, &#x27;username&#x27;)
 
-        &#x2F;&#x2F; without options
+        // without options
         var sequelize = new Sequelize(&#x27;database&#x27;, &#x27;username&#x27;, &#x27;password&#x27;)
 
-        &#x2F;&#x2F; without password &#x2F; with blank password
+        // without password / with blank password
         var sequelize = new Sequelize(&#x27;database&#x27;, &#x27;username&#x27;, null, {})
 
-        &#x2F;&#x2F; with password and options
+        // with password and options
         var sequelize = new Sequelize(&#x27;my_database&#x27;, &#x27;john&#x27;, &#x27;doe&#x27;, {})
 
     @class Sequelize
     @constructor
-  *&#x2F;
+  */
   var Sequelize = function(database, username, password, options) {
     var urlParts
     options = options || {}
 
     if (arguments.length === 1) {
       urlParts = url.parse(arguments[0])
-      database = urlParts.path.replace(&#x2F;^\&#x2F;&#x2F;,  &#x27;&#x27;)
+      database = urlParts.path.replace(/^\//,  &#x27;&#x27;)
       dialect = urlParts.protocol
-      options.dialect = urlParts.protocol.replace(&#x2F;:$&#x2F;, &#x27;&#x27;)
+      options.dialect = urlParts.protocol.replace(/:$/, &#x27;&#x27;)
       options.host = urlParts.hostname
 
       if (urlParts.port) {
@@ -191,7 +191,7 @@ module.exports = (function() {
       maxConcurrentQueries: this.options.maxConcurrentQueries
     }
 
-    var ConnectorManager = require(&quot;.&#x2F;dialects&#x2F;&quot; + this.options.dialect + &quot;&#x2F;connector-manager&quot;)
+    var ConnectorManager = require(&quot;./dialects/&quot; + this.options.dialect + &quot;/connector-manager&quot;)
 
     this.daoFactoryManager = new DAOFactoryManager(this)
     this.connectorManager  = new ConnectorManager(this, this.config)
@@ -199,36 +199,36 @@ module.exports = (function() {
     this.importCache = {}
   }
 
-  &#x2F;**
+  /**
     Reference to Utils
-  *&#x2F;
+  */
   Sequelize.Utils = Utils
 
   for (var dataType in DataTypes) {
     Sequelize[dataType] = DataTypes[dataType]
   }
 
-  &#x2F;**
+  /**
    Returns an instance of QueryInterface.
 
    @method getQueryInterface
    @return {QueryInterface} An instance (singleton) of QueryInterface.
-   *&#x2F;
+   */
   Sequelize.prototype.getQueryInterface = function() {
     this.queryInterface = this.queryInterface || new QueryInterface(this)
     return this.queryInterface
   }
 
-  &#x2F;**
+  /**
    Returns an instance (singleton) of Migrator.
 
    @method getMigrator
    @param {Object} [options={}] Some options
    @param {Boolean} [force=false] A flag that defines if the migrator should get instantiated or not.
    @return {Migrator} An instance of Migrator.
-   *&#x2F;
+   */
   Sequelize.prototype.getMigrator = function(options, force) {
-    var Migrator = require(&quot;.&#x2F;migrator&quot;)
+    var Migrator = require(&quot;./migrator&quot;)
 
     if (force) {
       this.migrator = new Migrator(this, options)
@@ -254,7 +254,7 @@ module.exports = (function() {
     }
     options.omitNull = globalOptions.omitNull
 
-    &#x2F;&#x2F; if you call &quot;define&quot; multiple times for the same daoName, do not clutter the factory
+    // if you call &quot;define&quot; multiple times for the same daoName, do not clutter the factory
     if(this.isDefined(daoName)) {
         this.daoFactoryManager.removeDAO(this.daoFactoryManager.getDAO(daoName))
     }
@@ -345,13 +345,13 @@ module.exports = (function() {
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>
