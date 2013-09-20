@@ -49,36 +49,31 @@ describe(Support.getTestDialectTeaser("QueryInterface"), function () {
 
   describe('indexes', function() {
     beforeEach(function(done) {
-      var self = this
-      this.queryInterface.dropTable('Users').success(function() {
-        self.queryInterface.createTable('Users', {
-          username: DataTypes.STRING,
-          isAdmin: DataTypes.BOOLEAN
-        }).success(function() {
-          done()
-        })
-      })
+      this.User = this.sequelize.define('User', { username: DataTypes.STRING, isAdmin: DataTypes.BOOLEAN })
+      this.User.sync({ force: true }).success(function(){ done() })
     })
 
     it('adds, reads and removes an index to the table', function(done) {
       var self = this
 
-      this.queryInterface.addIndex('Users', ['username', 'isAdmin']).complete(function(err) {
+      this.queryInterface.addIndex(self.User.tableName, ['username', 'isAdmin']).complete(function(err) {
         expect(err).to.be.null
 
-        self.queryInterface.showIndex('Users').complete(function(err, indexes) {
+        self.queryInterface.showIndex(self.User).complete(function(err, indexes) {
           expect(err).to.be.null
 
           var indexColumns = _.uniq(indexes.map(function(index) { return index.name }))
           expect(indexColumns).to.include('users_username_is_admin')
 
-          self.queryInterface.removeIndex('Users', ['username', 'isAdmin']).complete(function(err) {
+          self.queryInterface.removeIndex(self.User.tableName, ['username', 'isAdmin']).complete(function(err) {
             expect(err).to.be.null
 
-            self.queryInterface.showIndex('Users').complete(function(err, indexes) {
+            self.queryInterface.showIndex(self.User).complete(function(err, indexes) {
               expect(err).to.be.null
 
               indexColumns = _.uniq(indexes.map(function(index) { return index.name }))
+              indexColumns = _.pick(indexColumns, function(name) { return ['PRIMARY', 'Users_pkey'].indexOf(name) === -1 })
+
               expect(indexColumns).to.be.empty
 
               done()
