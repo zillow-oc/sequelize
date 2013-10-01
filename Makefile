@@ -13,18 +13,9 @@ teaser:
 
 test:
 	@if [ "$$GREP" ]; then \
-		make teaser && \
-		./node_modules/mocha/bin/mocha \
-		--colors \
-		--reporter $(REPORTER) \
-		--grep "$$GREP" \
-		$(TESTS); \
+		make teaser && ./node_modules/mocha/bin/mocha --colors --reporter $(REPORTER) -g "$$GREP" $(TESTS); \
 	else \
-		make teaser && \
-		./node_modules/mocha/bin/mocha \
-		--colors \
-		--reporter $(REPORTER) \
-		$(TESTS); \
+		make teaser && ./node_modules/mocha/bin/mocha --colors --reporter $(REPORTER) $(TESTS); \
 	fi
 
 sqlite:
