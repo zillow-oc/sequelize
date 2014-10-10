@@ -597,6 +597,16 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
         });
       });
 
+      it('does not modify the passed arguments', function () {
+        return this.User.create({}).bind(this).then(function (user) {
+          this.options = {};
+
+          return user.getTasks(this.options);
+        }).then(function () {
+          expect(this.options).to.deep.equal({});
+        });
+      });
+
       it('should treat the where object of associations as a first class citizen', function() {
         var self = this;
         this.Article = this.sequelize.define('Article', {
@@ -750,6 +760,16 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
         }).spread(function (john, task1, task2) {
           self.tasks = [task1, task2];
           return john.setTasks([task1, task2]);
+        });
+      });
+
+      it('does not modify the passed arguments', function () {
+        return this.User.create({}).bind(this).then(function (user) {
+          this.options = {};
+
+          return user.getTasks(this.options);
+        }).then(function () {
+          expect(this.options).to.deep.equal({});
         });
       });
 
@@ -919,9 +939,9 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
         }).then(function(projects) {
           expect(projects).to.have.length(1);
           var project = projects[0];
-          expect(project.ProjectUser).to.be.defined;
+          expect(project.ProjectUsers).to.be.defined;
           expect(project.status).not.to.exist;
-          expect(project.ProjectUser.status).to.equal('active');
+          expect(project.ProjectUsers.status).to.equal('active');
         });
       });
     });
@@ -1758,8 +1778,8 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
 
             expect(project.UserProjects).to.be.defined;
             expect(project.status).not.to.exist;
-            expect(project.UserProject.status).to.equal('active');
-            expect(project.UserProject.data).to.equal(42);
+            expect(project.UserProjects.status).to.equal('active');
+            expect(project.UserProjects.data).to.equal(42);
           });
         });
 
@@ -1776,8 +1796,8 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
 
             expect(project.UserProjects).to.be.defined;
             expect(project.status).not.to.exist;
-            expect(project.UserProject.status).to.equal('active');
-            expect(project.UserProject.data).not.to.exist;
+            expect(project.UserProjects.status).to.equal('active');
+            expect(project.UserProjects.data).not.to.exist;
           });
         });
       });
@@ -2088,20 +2108,15 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
       });
 
       describe('project has owners and users and owners and users have projects', function() {
-        beforeEach(function() {
+        beforeEach(function() {          
           this.Project.hasMany(this.User, { as: 'owners', through: 'projectOwners'});
           this.Project.hasMany(this.User, { as: 'users', through: 'projectUsers'});
 
-          this.User.hasMany(this.Project, { as: 'ownedProjects', through: 'projectOwners'});
-          this.User.hasMany(this.Project, { as: 'memberProjects', through: 'projectUsers'});
+          this.User.hasMany(this.Project, { as: 'owners', through: 'projectOwners'});
+          this.User.hasMany(this.User, { as: 'users', through: 'projectUsers'});
 
 
           return this.sequelize.sync({ force: true });
-        });
-
-        it('correctly pairs associations', function () {
-          expect(this.Project.associations.owners.targetAssociation).to.equal(this.User.associations.ownedProjects);
-          expect(this.Project.associations.users.targetAssociation).to.equal(this.User.associations.memberProjects);
         });
 
         it('correctly sets user and owner', function() {
