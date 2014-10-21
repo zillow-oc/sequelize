@@ -598,6 +598,16 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
         });
       });
 
+      it('does not modify the passed arguments', function () {
+        return this.User.create({}).bind(this).then(function (user) {
+          this.options = {};
+
+          return user.getTasks(this.options);
+        }).then(function () {
+          expect(this.options).to.deep.equal({});
+        });
+      });
+
       it('should treat the where object of associations as a first class citizen', function() {
         var self = this;
         this.Article = this.sequelize.define('Article', {
@@ -751,6 +761,16 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
         }).spread(function (john, task1, task2) {
           self.tasks = [task1, task2];
           return john.setTasks([task1, task2]);
+        });
+      });
+
+      it('does not modify the passed arguments', function () {
+        return this.User.create({}).bind(this).then(function (user) {
+          this.options = {};
+
+          return user.getTasks(this.options);
+        }).then(function () {
+          expect(this.options).to.deep.equal({});
         });
       });
 
@@ -2095,6 +2115,7 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
 
           this.User.hasMany(this.Project, { as: 'ownedProjects', through: 'projectOwners'});
           this.User.hasMany(this.Project, { as: 'memberProjects', through: 'projectUsers'});
+
 
           return this.sequelize.sync({ force: true });
         });
