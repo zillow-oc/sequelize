@@ -3,7 +3,8 @@
 var chai      = require('chai')
   , Sequelize = require('../../index')
   , expect    = chai.expect
-  , Support   = require(__dirname + '/../support')
+  , Support   = require(__dirname + '/../support') 
+  , dialect   = Support.getTestDialect()
   , DataTypes = require(__dirname + "/../../lib/data-types")
   , datetime  = require('chai-datetime')
   , async     = require('async')
@@ -16,6 +17,7 @@ var sortById = function(a, b) {
 }
 
 describe(Support.getTestDialectTeaser("Include"), function () {
+
   describe('findAll', function () {
     beforeEach(function () {
       this.fixtureA = function(done) {
@@ -1616,7 +1618,6 @@ describe(Support.getTestDialectTeaser("Include"), function () {
 
     // Test case by @eshell
     it('should be possible not to include the main id in the attributes', function (done) {
-      this.timeout(6000);
       var Member = this.sequelize.define('Member', {
         id: {
           type: Sequelize.BIGINT,

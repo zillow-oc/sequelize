@@ -3,6 +3,7 @@ var chai        = require('chai')
   , Support     = require(__dirname + '/support')
   , Promise     = require(__dirname + '/../lib/promise')
   , Transaction = require(__dirname + '/../lib/transaction')
+  , dialect     = Support.getTestDialect()
 
 describe(Support.getTestDialectTeaser("Sequelize#transaction"), function () {
   this.timeout(4000);
@@ -42,6 +43,8 @@ describe(Support.getTestDialectTeaser("Sequelize#transaction"), function () {
             case 'sqlite':
               query = 'select sqlite3_sleep(2000);';
               break;
+            case 'mssql':
+              query = "WAITFOR DELAY '00:00:02';";
             default:
               break;
             }
@@ -52,7 +55,6 @@ describe(Support.getTestDialectTeaser("Sequelize#transaction"), function () {
               transaction: t
             }).then(function() {
               var dao = User.build({ name: 'foo' });
-
               // this.QueryGenerator.insertQuery(tableName, values, dao.daoFactory.rawAttributes)
               return query = sequelize
                 .getQueryInterface()

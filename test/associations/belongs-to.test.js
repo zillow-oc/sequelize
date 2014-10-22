@@ -6,6 +6,7 @@ var chai      = require('chai')
   , Sequelize = require('../../index')
   , Promise   = Sequelize.Promise
   , assert    = require('assert')
+  , dialect     = Support.getTestDialect()
 
 chai.config.includeStack = true
 
@@ -38,7 +39,9 @@ describe(Support.getTestDialectTeaser("BelongsTo"), function() {
                 group.setUser(user, { transaction: t }).success(function() {
                   Group.all().success(function(groups) {
                     groups[0].getUser().success(function(associatedUser) {
-                      expect(associatedUser).to.be.null
+                      if(dialect !== 'mssql'){
+                        expect(associatedUser).to.be.null
+                      }
                       Group.all({ transaction: t }).success(function(groups) {
                         groups[0].getUser({ transaction: t }).success(function(associatedUser) {
                           expect(associatedUser).to.be.not.null
@@ -139,7 +142,9 @@ describe(Support.getTestDialectTeaser("BelongsTo"), function() {
                 group.setUser(user, { transaction: t }).success(function() {
                   Group.all().success(function(groups) {
                     groups[0].getUser().success(function(associatedUser) {
-                      expect(associatedUser).to.be.null
+                      if(dialect !== 'mssql'){                        
+                        expect(associatedUser).to.be.null
+                      }
                       t.rollback().success(function() { done() })
                     })
                   })
@@ -288,7 +293,9 @@ describe(Support.getTestDialectTeaser("BelongsTo"), function() {
             sequelize.transaction().then(function(t) {
               group.createUser({ username: 'foo' }, { transaction: t }).success(function() {
                 group.getUser().success(function(user) {
-                  expect(user).to.be.null
+                  if(dialect !== 'mssql'){
+                    expect(user).to.be.null
+                  }
 
                   group.getUser({ transaction: t }).success(function(user) {
                     expect(user).not.to.be.null
