@@ -1616,6 +1616,7 @@ describe(Support.getTestDialectTeaser("Include"), function () {
 
     // Test case by @eshell
     it('should be possible not to include the main id in the attributes', function (done) {
+      this.timeout(6000);
       var Member = this.sequelize.define('Member', {
         id: {
           type: Sequelize.BIGINT,
