@@ -6,21 +6,24 @@ var chai        = require('chai')
   , dialect     = Support.getTestDialect()
 
 describe(Support.getTestDialectTeaser("Sequelize#transaction"), function () {
-  this.timeout(4000);
+  this.timeout(6000);
 
   describe('success', function() {
     it("gets triggered once a transaction has been successfully committed", function(done) {
       this
         .sequelize
-        .transaction().then(function(t) { t.commit(); })
-        .success(function() { done(); });
+        .transaction().then(function(t) { 
+          t.commit().success(function() { done() }) 
+        })
+        
     });
 
     it("gets triggered once a transaction has been successfully rollbacked", function(done) {
       this
         .sequelize
-        .transaction().then(function(t) { t.rollback(); })
-        .success(function() { done(); });
+        .transaction().then(function(t) { 
+          t.rollback().success(function() { done() })
+      })
     });
 
     if (Support.getTestDialect() !== 'sqlite') {
@@ -157,7 +160,7 @@ describe(Support.getTestDialectTeaser("Sequelize#transaction"), function () {
         })
       })
 
-      it("triggers the error event for the second transactions", function(done) {
+      if(dialect !== 'mssql' ? it : it.skip)("triggers the error event for the second transactions", function(done) {
         var self = this
 
         this.sequelize.transaction().then(function(t1) {
@@ -166,6 +169,7 @@ describe(Support.getTestDialectTeaser("Sequelize#transaction"), function () {
               .Model
               .create({ name: 'omnom' }, { transaction: t1 })
               .success(function(m1) {
+                console.log('here');
                 self
                   .Model
                   .create({ name: 'omnom' }, { transaction: t2 })
