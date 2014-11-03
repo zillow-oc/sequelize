@@ -391,7 +391,7 @@ describe(Support.getTestDialectTeaser("Include"), function () {
                     ]}
                   ],
                   order: [
-                    ['User.id', 'ASC']
+                    ['id', 'ASC']
                   ]
                 }).done(function (err, users) {
                   expect(err).not.to.be.ok
@@ -782,8 +782,8 @@ describe(Support.getTestDialectTeaser("Include"), function () {
               {model: Tag}
             ],
             order: [
-              ['Product.id', 'ASC'],
-              ['Tags.id', 'ASC']
+              ['id', 'ASC'],
+              [Tag, 'id', 'ASC']
             ]
           }).done(function (err, products) {
             expect(err).not.to.be.ok
@@ -1462,7 +1462,7 @@ describe(Support.getTestDialectTeaser("Include"), function () {
                     ]}
                   ],
                   order: [
-                    ['User.id', 'ASC']
+                    ['id', 'ASC']
                   ]
                 }).done(function (err, users) {
                   expect(err).not.to.be.ok
@@ -1711,7 +1711,7 @@ describe(Support.getTestDialectTeaser("Include"), function () {
           ],
           limit: 6,
           order: [
-            ['Product.id', 'ASC']
+            ['id', 'ASC']
           ]
         }).done(function (err, products) {
           expect(err).not.to.be.ok
@@ -1741,7 +1741,7 @@ describe(Support.getTestDialectTeaser("Include"), function () {
           ],
           limit: 10,
           order: [
-            ['Product.id', 'ASC']
+            ['id', 'ASC']
           ]
         }).done(function (err, products) {
           expect(err).not.to.be.ok
