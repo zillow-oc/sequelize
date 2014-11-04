@@ -1613,6 +1613,8 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
             self.Project.create({name: 'Good Will Hunting'})
           ]);
         }).spread(function (user, project) {
+          self.user = user;
+          self.project = project;
           return user.addProject(project).return(user);
         }).then(function(user) {
           return user.getProjects();
@@ -1620,6 +1622,10 @@ describe(Support.getTestDialectTeaser("HasMany"), function() {
           var project = projects[0];
 
           expect(project).to.be.defined;
+          return self.user.removeProject(project).on('sql', function (sql) {
+          }).return(project);
+        }).then(function(project) {
+          return self.user.setProjects([project]);
         });
       });
 
