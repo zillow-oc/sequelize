@@ -20,6 +20,7 @@ var sortById = function(a, b) {
 describe(Support.getTestDialectTeaser("Include"), function () {
 
   describe('findAll', function () {
+    this.timeout(30000);
     beforeEach(function () {
       this.fixtureA = function(done) {
         var User = this.sequelize.define('User', {})
