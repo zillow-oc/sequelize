@@ -21,15 +21,19 @@ if (dialect !== 'sqlite') {
 
     it('returns the same value for current timestamp', function () {
       var now = 'now()';
-      if(dialect === 'mssql'){
+      if (dialect === 'mssql') {
         now = 'GETDATE()';
       }
+
       var query = "SELECT " + now + " as now";
+      var startQueryTime = Date.now();
+
       return Promise.all([
         this.sequelize.query(query),
         this.sequelizeWithTimezone.query(query)
       ]).spread(function (now1, now2) {
-        expect(now1[0].now.getTime()).to.be.closeTo(now2[0].now.getTime(), 50);
+        var elapsedQueryTime = Date.now() - startQueryTime;
+        expect(now1[0].now.getTime()).to.be.closeTo(now2[0].now.getTime(), elapsedQueryTime);
       });
     });
 
