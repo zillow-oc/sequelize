@@ -323,11 +323,20 @@ describe(Support.getTestDialectTeaser("Model"), function () {
         return this.sequelize.sync({ force: true }).then(function () {
           return Test.create({});
         }).then(function () {
-          return Test.findAll({
-            attributes: [
+          var findAttributes;
+          if (dialect === 'mssql') {
+            findAttributes = [
+              Sequelize.literal('CAST(CASE WHEN EXISTS(SELECT 1) THEN 1 ELSE 0 END AS BIT) AS "someProperty"'),
+              [Sequelize.literal('CAST(CASE WHEN EXISTS(SELECT 1) THEN 1 ELSE 0 END AS BIT)'), 'someProperty2']
+            ];
+          } else {
+            findAttributes = [
               Sequelize.literal('EXISTS(SELECT 1) AS "someProperty"'),
               [Sequelize.literal('EXISTS(SELECT 1)'), 'someProperty2']
-            ]
+            ];
+          }
+          return Test.findAll({
+            attributes: findAttributes
           });
         }).then(function (tests) {
           expect(tests[0].get('someProperty')).to.be.ok;
@@ -482,7 +491,12 @@ describe(Support.getTestDialectTeaser("Model"), function () {
           return this.sequelize.sync({ force: true}).then(function () {
             return Post.bulkCreate([{ text: 'text1' },{ text: 'text2' }]);
           }).then(function () {
-            return Post.find({ attributes: ['id','text',Sequelize.literal('EXISTS(SELECT 1) AS "someBoolean"')] });
+            var boolQuery = 'EXISTS(SELECT 1) AS "someBoolean"';
+            if (dialect === 'mssql') {
+              boolQuery = 'CAST(CASE WHEN EXISTS(SELECT 1) THEN 1 ELSE 0 END AS BIT) AS "someBoolean"';
+            }
+
+            return Post.find({ attributes: ['id','text', Sequelize.literal(boolQuery)] });
           }).then(function (post) {
             expect(post.get('someBoolean')).to.be.ok;
             expect(post.get().someBoolean).to.be.ok;
