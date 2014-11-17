@@ -3,7 +3,7 @@
 var chai      = require('chai')
   , Sequelize = require('../../index')
   , expect    = chai.expect
-  , Support   = require(__dirname + '/../support') 
+  , Support   = require(__dirname + '/../support')
   , dialect   = Support.getTestDialect()
   , DataTypes = require(__dirname + "/../../lib/data-types")
   , datetime  = require('chai-datetime')
@@ -229,7 +229,7 @@ describe(Support.getTestDialectTeaser("Include"), function () {
                   }, callback)
                 },
                 function (err) {
-                  console.log('err', err);
+                  // console.log('err', err);
                   expect(err).not.to.be.ok
                   done()
                 }
@@ -307,7 +307,7 @@ describe(Support.getTestDialectTeaser("Include"), function () {
             }],
             limit: 1
           }).on('sql', function (sql) {
-            console.log(sql);
+            // console.log(sql);
           });
         });
       });
@@ -1105,7 +1105,7 @@ describe(Support.getTestDialectTeaser("Include"), function () {
 
             chainer.run().done(callback)
           }]
-        }, function (err) {          
+        }, function (err) {
           expect(err).not.to.be.ok
 
           User.findAll({
