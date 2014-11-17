@@ -32,7 +32,7 @@ describe(Support.getTestDialectTeaser("DAOFactory"), function () {
     })
   })
 
-  describe.only('constructor', function() {
+  describe('constructor', function() {
     it("uses the passed dao name as tablename if freezeTableName", function(done) {
       var User = this.sequelize.define('FrozenUser', {}, { freezeTableName: true })
       expect(User.tableName).to.equal('FrozenUser')
