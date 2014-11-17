@@ -722,13 +722,13 @@ describe(Support.getTestDialectTeaser("DAOFactory"), function () {
                     where: {username: 'foo'},
                     defaults: { foo: 'asd' },
                     transaction: t
-                  }).spread(function(user3) {                    
-                    if(dialect !== 'mssql'){             
-                      expect(user1.isNewRecord).to.be.true       
-                    }  
+                  }).spread(function(user3) {
+                    if(dialect !== 'mssql'){
+                      expect(user1.isNewRecord).to.be.true
+                    }
                     expect(user2.isNewRecord).to.be.false
                     expect(user3.isNewRecord).to.be.false
-                    t.commit().success(function() { 
+                    t.commit().success(function() {
                       done()
                     })
                   })
@@ -1630,7 +1630,7 @@ describe(Support.getTestDialectTeaser("DAOFactory"), function () {
                     expect(min1).to.be.not.ok
                   }
                   expect(min2).to.equal(5)
-                  
+
                   t.rollback().success(function(){ done() })
                 })
               })
@@ -1936,7 +1936,7 @@ describe(Support.getTestDialectTeaser("DAOFactory"), function () {
             } else if (dialect === 'mssql'){
               expect(self.UserSpecialSync.getTableName().toString()).to.equal('special.UserSpecials');
               expect(UserSpecial.indexOf('INSERT INTO "special.UserSpecials"')).to.be.above(-1)
-              expect(UserPublic.indexOf('INSERT INTO "UserPublics"')).to.be.above(-1)      
+              expect(UserPublic.indexOf('INSERT INTO "UserPublics"')).to.be.above(-1)
             } else {
               expect(self.UserSpecialSync.getTableName().toString()).to.equal('`special.UserSpecials`');
               expect(UserSpecial.indexOf('INSERT INTO `special.UserSpecials`')).to.be.above(-1)
@@ -2112,7 +2112,7 @@ describe(Support.getTestDialectTeaser("DAOFactory"), function () {
       })
     })
   })
-  
+
   //mssql is not supported by the sql package
   if(dialect !== 'mssql'){
     describe("syntax sugar", function() {
