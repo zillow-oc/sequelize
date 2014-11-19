@@ -14,7 +14,8 @@ var chai      = require('chai')
 
 chai.config.includeStack = true;
 
-describe(Support.getTestDialectTeaser("HasMany"), function() {
+describe.only(Support.getTestDialectTeaser("HasMany"), function() {
+  this.timeout(30000);
   describe("Model.associations", function () {
     it("should store all assocations when associting to the same table multiple times", function () {
       var User = this.sequelize.define('User', {})
