@@ -262,7 +262,7 @@ describe(Support.getTestDialectTeaser("QueryInterface"), function () {
           references: 'level',
           referenceKey: 'id',
           onUpdate: 'cascade',
-          onDelete: 'restrict'
+          onDelete: 'set null'
         });
       });
     });
@@ -310,7 +310,7 @@ describe(Support.getTestDialectTeaser("QueryInterface"), function () {
             references: 'users',
             referenceKey: 'id',
             onUpdate: 'cascade',
-            onDelete: 'restrict'
+            onDelete: 'set null'
           },
         })
       })
@@ -326,7 +326,7 @@ describe(Support.getTestDialectTeaser("QueryInterface"), function () {
         if (dialect === "postgres" || dialect === "postgres-native" ) {
           expect(keys).to.have.length(6)
           expect(keys2).to.have.length(7)
-          expect(keys3).to.have.length(8)
+          expect(keys3).to.have.length(7)
         } else if (dialect === "sqlite") {
           expect(keys).to.have.length(8)
         } else if (dialect === "mysql" || dialect == 'mssql') {
